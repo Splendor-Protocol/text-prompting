@@ -12,11 +12,29 @@ This repository contains a Bittensor Miner that uses OpenAI's GPT-3.5-turbo mode
 2. Install the required packages with `pip install -r requirements.txt`
 3. Ensure that you have your OpenAI key in your os environment variable
 ```bash
-# Sets your openai key in os envs variable
+apt update
+apt install docker
+apt install docker-compose
+docker pull opentensorfdn/bittensor:6.1.0-cubit1.1.2
+git clone https://github.com/opentensor/text-prompting.git
+cd text-prompting/
+pip install -r requirements.txt
+cd neurons/miners/mistral7b
+pip install -r requirements.txt
+git clone https://github.com/opentensor/subtensorv3.git
+cd subtensorv3
+docker pull opentensor/subtensor
+sudo service docker start
+sudo usermod -aG docker $USER
+pip install bittensor
+btcli wallet new_coldkey --subtensor.network test
+btcli wallet new_hotkey --subtensor.network test
+cd ~/text-prompting/neurons/miners/openai
+pip install -r requirements.txt
 export OPENAI_API_KEY='your_openai_key_here'
-
 # Verifies if openai key is set correctly
 echo $OPENAI_API_KEY
+python3 miner.py --netuid 8 --subtensor.network test --wallet.name your_coldkey --wallet.hotkey your_hotkey --logging.debug
 ```
 
 For more configuration options related to the wallet, axon, subtensor, logging, and metagraph, please refer to the Bittensor documentation.
